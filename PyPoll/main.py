@@ -60,7 +60,7 @@ with open(election_csv) as csvfile:
     perc3 = round((person3/tvotes) * 100,3)
     
 
-    
+#prints results in terminal   
 print("               Election Results               ")
 print("----------------------------------------------") 
 print(f"Total Votes: {tvotes}")
@@ -73,6 +73,7 @@ print(f"Winner: {winner}")
 print("----------------------------------------------")
 
 
+#creates text file with results
 with open("Analysis/results.txt","w") as file:
     file.write("               Election Results               \n")
     file.write("----------------------------------------------\n")

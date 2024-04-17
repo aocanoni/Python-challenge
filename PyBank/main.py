@@ -4,10 +4,9 @@ import os
 #module for reading CSV files
 import csv
 
-#ask if ".." needs to be added- it doesn't work when I add in front of resources? likely because main.py is in the same folder as Resources?
 budget_csv = os.path.join('Resources', 'budget_data.csv')
 
-#improved reading using CSV module??
+#improved reading using CSV module
 
 with open(budget_csv) as csvfile:
 
@@ -16,10 +15,10 @@ with open(budget_csv) as csvfile:
     #skip header row first
     next(csvreader, None)
 
-    #total number of months starting w/0 then gets rewritten according to # of rows in csv file
+    #total number of months starting w/0 then gets rewritten later according to # of rows in csv file
     tmonths = 0
 
-    #list that profit/losses will be added to for total amount
+    #lists to input months, profits/losses, and changes in profits/losses + averaging them
     months = []
 
     tamnt = []
@@ -31,21 +30,26 @@ with open(budget_csv) as csvfile:
         #counts number of rows not including header = number of months (+= means tmonths +1)
         tmonths += 1
 
-        #puts all of the numbers into a list
+        #puts all of the numbers and months into lists
         tamnt.append(int(row[1]))
         months.append(row[0])
 
 
+    #creates zip of months and tamnt into one list so that I can iterate through it
     budget = list(zip(months, tamnt))
+
+    #initializes all these variables all to 0- will be overwritten
     ginc = 0
     incmonth = 0
     gdec = 0
     decmonth = 0
     
+    #this for loop puts the profits/losses all into one list under avgchange
     for num in range(len(tamnt) - 1):
         
         avgchange.append(tamnt[num + 1] - tamnt[num])
 
+    #this for loop goes through the budget list to find the greatest increase/decreasse in profits as well as their corresponding months
     for num in range(len(budget) - 1):
 
         if (budget[num + 1][1] - budget[num][1]) >= ginc:
@@ -59,19 +63,18 @@ with open(budget_csv) as csvfile:
 
 
 
-
-    print("                 Financial Analysis               ")
-    print("--------------------------------------------------") 
-    print(f"Total Months: {tmonths}")
-    
-    #prints the sum of all the numbers in tamnt list
-    print(f"Total: ${sum(tamnt)}")
-    print(f"Average Change: ${round((sum(avgchange))/len(avgchange),2)}")
-    print(f"Greatest Increase in Profits: {incmonth} (${ginc})")
-    print(f"Greatest Decrease in Profits: {decmonth} (${gdec})")
-
+#prints results in terminal
+print("                 Financial Analysis               ")
+print("--------------------------------------------------") 
+print(f"Total Months: {tmonths}")  
+#prints the sum of all the numbers in tamnt list
+print(f"Total: ${sum(tamnt)}")
+print(f"Average Change: ${round((sum(avgchange))/len(avgchange),2)}")
+print(f"Greatest Increase in Profits: {incmonth} (${ginc})")
+print(f"Greatest Decrease in Profits: {decmonth} (${gdec})")
 
 
+#Creates text file with results
 with open("Analysis/results.txt","w") as file:
     file.write("               Financial Analysis               \n")
     file.write("--------------------------------------------------\n")
